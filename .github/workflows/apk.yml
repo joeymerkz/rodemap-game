@@ -28,11 +28,9 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install SDK platform, build-tools and NDK r29
         run: |
+          yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platforms;android-37" "build-tools;37.0.0" "ndk;29.0.14206865"
 
       - name: Signing material
