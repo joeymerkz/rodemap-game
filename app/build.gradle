@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+// Rodemap Game: release signing comes from local.properties (written by CI
+// after decrypting signing/rodemap-air.jks.enc; never committed with values).
+// storeFile is resolved relative to this module's directory, so CI uses
+// storeFile=../upload.jks for the keystore at the repo root.
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+
 android {
     ndkVersion "29.0.14206865"
 
@@ -7,12 +17,23 @@ android {
 
     namespace 'com.limelight'
 
+    if (localProps.containsKey('storeFile')) {
+        signingConfigs {
+            release {
+                storeFile file(localProps.getProperty('storeFile'))
+                storePassword localProps.getProperty('storePassword')
+                keyAlias localProps.getProperty('keyAlias')
+                keyPassword localProps.getProperty('keyPassword')
+            }
+        }
+    }
+
     defaultConfig {
         minSdk 21
         targetSdk 36
 
-        versionName "12.2"
-        versionCode = 315
+        versionName "1.0.0"
+        versionCode = 1
 
         // Generate native debug symbols to allow Google Play to symbolicate our native crashes
         ndk.debugSymbolLevel = 'FULL'
@@ -37,7 +58,7 @@ android {
                 }
             }
 
-            applicationId "com.limelight.root"
+            applicationId "app.rodemap.game.root"
             dimension "root"
             buildConfigField "boolean", "ROOT_BUILD", "true"
         }
@@ -49,7 +70,7 @@ android {
                 }
             }
 
-            applicationId "com.limelight"
+            applicationId "app.rodemap.game"
             dimension "root"
             buildConfigField "boolean", "ROOT_BUILD", "false"
         }
@@ -84,8 +105,8 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            resValue "string", "app_label", "Moonlight (Debug)"
-            resValue "string", "app_label_root", "Moonlight (Root Debug)"
+            resValue "string", "app_label", "Rodemap Game (Debug)"
+            resValue "string", "app_label_root", "Rodemap Game (Root Debug)"
         }
         release {
             // To whomever is releasing/using an APK in release mode with
@@ -118,9 +139,18 @@ android {
             // is to please change the applicationId before you publish.
             //
             // TL;DR: Leave the following line alone!
-            applicationIdSuffix ".unofficial"
-            resValue "string", "app_label", "Moonlight"
-            resValue "string", "app_label_root", "Moonlight (Root)"
+            //
+            // Rodemap Game: this fork does exactly what upstream asks above —
+            // it ships under its own applicationId (app.rodemap.game, set in
+            // the flavors), so the ".unofficial" suffix is not applied.
+            resValue "string", "app_label", "Rodemap Game"
+            resValue "string", "app_label_root", "Rodemap Game (Root)"
+
+            // Rodemap Game: sign with the Rodemap key when local.properties
+            // provided one (CI); unsigned otherwise, as upstream.
+            if (localProps.containsKey('storeFile')) {
+                signingConfig signingConfigs.release
+            }
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
