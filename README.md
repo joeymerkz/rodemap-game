@@ -1,16 +1,8 @@
-# Moonlight Android
+# Rodemap Game
 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/232a8tadrrn8jv0k/branch/master?svg=true)](https://ci.appveyor.com/project/cgutman/moonlight-android/branch/master)
-[![Translation Status](https://hosted.weblate.org/widgets/moonlight/-/moonlight-android/svg-badge.svg)](https://hosted.weblate.org/projects/moonlight/moonlight-android/)
+Rodemap Game is a private, Rodemap-branded game-streaming client for Fire TV: stream games from your own PC (running Sunshine) to the TV on your local network. Less busywork. More progress.
 
-[Moonlight for Android](https://moonlight-stream.org) is an open source client for NVIDIA GameStream and [Sunshine](https://github.com/LizardByte/Sunshine).
-
-Moonlight for Android will allow you to stream your full collection of games from your Windows PC to your Android device,
-whether in your own home or over the internet.
-
-Moonlight also has a [PC client](https://github.com/moonlight-stream/moonlight-qt) and [iOS/tvOS client](https://github.com/moonlight-stream/moonlight-ios).
-
-You can follow development on our [Discord server](https://moonlight-stream.org/discord) and help translate Moonlight into your language on [Weblate](https://hosted.weblate.org/projects/moonlight/moonlight-android/).
+Fork of moonlight-stream/moonlight-android (GPL-3.0), pinned at upstream v12.2, for private use. Branding only — protocol and streaming engine are untouched, and all upstream licensing and attribution remain in place (see LICENSE.txt). The upstream Moonlight documentation below is unchanged.
 
 ## Downloads
 * [Google Play Store](https://play.google.com/store/apps/details?id=com.limelight)
