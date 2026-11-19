@@ -30,8 +30,10 @@ jobs:
 
       - name: Install SDK platform, build-tools and NDK r29
         run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platforms;android-37" "build-tools;37.0.0" "ndk;29.0.14206865"
+          if [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then SM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"; else SM=$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1); fi
+          echo "Using $SM"
+          yes | "$SM" --licenses > /dev/null || true
+          "$SM" "platforms;android-37" "build-tools;37.0.0" "ndk;29.0.14206865"
 
       - name: Signing material
         run: |
